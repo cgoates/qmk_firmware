@@ -186,7 +186,7 @@ Alternative alpha arrangements are also available.
 #+NAME: hold
 | RESET |       |       |       |       |       |       |       |       | RESET |
 | LGUI  | LALT  | LCTL  | LSFT  |       |       | LSFT  | LCTL  | LALT  | LGUI  |
-|       | ALGR  |       |       |       |       |       |       | ALGR  |       |
+| MBO   | ALGR  |       |       |       |       |       |       | ALGR  | MBO   |
 | U_NP  | U_NP  | MEDIA | NAV   | MOUSE | SYM   | NUM   | FUN   | U_NP  | U_NP  |
 
 
@@ -228,13 +228,16 @@ layer.
 
 *** Mouse Buttons Overlay
 
-Available for automatic activation depending on keyboard hardware and
-configuration.  Not activated manually.
+The Mouse Buttons Overlay provides mouse buttons, mods, and clipboard keys for
+use with integrated or external pointing devices, used with either hand.  The
+layer is available for automatic activation depending on keyboard hardware and
+configuration.  It can also be activated manually by holding a bottom row pinkie
+key (in which case GUI and Redo are unavailable).
 
 #+NAME: mbo
 | U_RDO | U_PST | U_CPY | U_CUT | U_UND | U_RDO | U_PST | U_CPY | U_CUT | U_UND |
 | LGUI  | LALT  | LCTL  | LSFT  |       |       | LSFT  | LCTL  | LALT  | LGUI  |
-|       |       |       |       |       |       |       |       |       |       |
+| U_RDO | U_PST | U_CPY | U_CUT | U_UND | U_RDO | U_PST | U_CPY | U_CUT | U_UND |
 | U_NP  | U_NP  | BTN2  | BTN3  | BTN1  | BTN1  | BTN3  | BTN2  | U_NP  | U_NP  |
 
 
@@ -544,16 +547,7 @@ To select, append ~MIRYOKU_LAYERS=FLIP~ to the ~make~ command line when building
 | MS_L  | MS_D  | MS_U  | MS_R  |       |
 | U_UND | U_CUT | U_CPY | U_PST | U_RDO |
 | U_NP  | U_NP  | BTN2  | BTN3  | BTN1  |
-
-
-****** Mouse Buttons Overlay
-
-#+NAME: mbo-flip
-|       |       |       |       |       |       |       |       |       |       |
-| LGUI  | LALT  | LCTL  | LSFT  |       |       | LSFT  | LCTL  | LALT  | LGUI  |
-| U_RDO | U_PST | U_CPY | U_CUT | U_UND | U_RDO | U_PST | U_CPY | U_CUT | U_UND |
-| U_NP  | U_NP  | BTN2  | BTN3  | BTN1  | BTN1  | BTN3  | BTN2  | U_NP  | U_NP  |
-
+  
 
 ****** Media
 
@@ -770,12 +764,12 @@ Produce layer enums from layer names in hold table.
 #+NAME: table-enums
 #+BEGIN_SRC python :var hold_table=hold :var mods_table=mods :tangle no
 mods_dict = dict.fromkeys(mods_table[0])
-results = 'enum layers { BASE, MBO, '
+layers = [ 'BASE', 'MBO' ]
 for hold_row in hold_table:
   for hold in hold_row:
-    if hold not in mods_dict and hold != '' and hold != 'U_NP' and hold != 'RESET':
-      results += hold + ', '
-results = results.rstrip(', ') + ' };'
+    if hold not in mods_dict and hold != '' and hold != 'U_NP' and hold != 'RESET' and hold not in layers:
+      layers.append(hold)
+results = 'enum layers { ' + ', '.join(layers) + ' };'
 return results
 #+END_SRC
 
@@ -1085,9 +1079,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 <<table-layout-half(half_table=media-l, mode="l", hold_table=hold-flip)>>
   ),
   #endif
-  [MBO] = LAYOUT_miryoku(
-<<table-layout-full(table=mbo, fill="TRNS")>>
-  ),
   [NUM] = LAYOUT_miryoku(
 <<table-layout-half(half_table=num-r, mode="r", hold_table=hold-flip)>>
   ),
@@ -1096,8 +1087,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
   [FUN] = LAYOUT_miryoku(
 <<table-layout-half(half_table=fun-r, mode="r", hold_table=hold-flip)>>
-  )
-,
+  ),
 #else
   [BASE] = LAYOUT_miryoku(
   #if defined MIRYOKU_ALPHAS_COLEMAK
@@ -1137,9 +1127,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 <<table-layout-half(half_table=media-r, mode="r")>>
   ),
   #endif
-  [MBO] = LAYOUT_miryoku(
-<<table-layout-full(table=mbo-flip, fill="TRNS")>>
-  ),
   [NUM] = LAYOUT_miryoku(
 <<table-layout-half(half_table=num-l, mode="l")>>
   ),
@@ -1148,8 +1135,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
   [FUN] = LAYOUT_miryoku(
 <<table-layout-half(half_table=fun-l, mode="l")>>
-  )
+  ),
 #endif
+  [MBO] = LAYOUT_miryoku(
+<<table-layout-full(table=mbo, fill="TRNS")>>
+  )
 };
 #+END_SRC
 
