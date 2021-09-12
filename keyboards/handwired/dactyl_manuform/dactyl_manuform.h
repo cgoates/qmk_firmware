@@ -2,6 +2,8 @@
 
 #if defined(KEYBOARD_handwired_dactyl_manuform_4x5)
 #    include "4x5.h"
+#elif defined(KEYBOARD_handwired_dactyl_manuform_skel)
+    #include "skel.h"
 #elif defined(KEYBOARD_handwired_dactyl_manuform_4x6)
 #    include "4x6.h"
 #elif defined(KEYBOARD_handwired_dactyl_manuform_4x6_5)
