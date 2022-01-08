@@ -40,14 +40,14 @@
 #define SALT_TAB KC_NO
 
 // COMBOS
-const uint16_t PROGMEM combo1[] = { KC_L, KC_H, COMBO_END };
-const uint16_t PROGMEM combo2[] = { KC_E, KC_U, COMBO_END };
-const uint16_t PROGMEM combo3[] = { KC_H, KC_F, COMBO_END };
-const uint16_t PROGMEM combo4[] = { KC_E, KC_J, COMBO_END };
-const uint16_t PROGMEM combo5[] = { KC_D, KC_S, COMBO_END };
-const uint16_t PROGMEM combo6[] = { KC_R, KC_N, COMBO_END };
-const uint16_t PROGMEM combo7[] = { KC_G, KC_S, COMBO_END };
-const uint16_t PROGMEM combo8[] = { KC_W, KC_N, COMBO_END };
+const uint16_t PROGMEM combo1[] = { KC_E, KC_D, COMBO_END };
+const uint16_t PROGMEM combo2[] = { KC_R, KC_F, COMBO_END };
+const uint16_t PROGMEM combo3[] = { KC_D, KC_C, COMBO_END };
+const uint16_t PROGMEM combo4[] = { KC_F, KC_V, COMBO_END };
+const uint16_t PROGMEM combo5[] = { KC_U, KC_J, COMBO_END };
+const uint16_t PROGMEM combo6[] = { KC_I, KC_K, COMBO_END };
+const uint16_t PROGMEM combo7[] = { KC_J, KC_M, COMBO_END };
+const uint16_t PROGMEM combo8[] = { KC_K, KC_COMMA, COMBO_END };
 combo_t key_combos[COMBO_COUNT] = {
     COMBO( combo1, LSFT( KC_LBRACKET ) ),
     COMBO( combo2, LSFT( KC_RBRACKET ) ),
@@ -55,8 +55,8 @@ combo_t key_combos[COMBO_COUNT] = {
     COMBO( combo4, KC_RBRACKET ),
     COMBO( combo5, LSFT( KC_9 ) ),
     COMBO( combo6, LSFT( KC_0 ) ),
-    COMBO( combo7, LSFT( KC_COMMA ) ),
-    COMBO( combo8, LSFT( KC_DOT ) )
+    COMBO( combo7, KC_QUOT ),
+    COMBO( combo8, LSFT( KC_QUOT ) )
 };
 
 /// \brief Registers an alternate key code on a shift.
@@ -150,18 +150,6 @@ bool process_record_user( uint16_t keycode, keyrecord_t* record )
             return alternate_shift( record, &delkey_registered, KC_DEL );
             break;
         }
-        case KC_SLSH:
-        {
-            static bool bkslsh_registered;
-            return alternate_shift( record, &bkslsh_registered, KC_BSLASH );
-            break;
-        }
-        case KC_COMM:
-        {
-            static bool period_registered;
-            return alternate_shift( record, &period_registered, KC_DOT );
-            break;
-        }
     }
     return true;
 }
@@ -189,9 +177,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 
 [_ALPHA] = LAYOUT_WITH_RESET( \
-  KC_K, KC_M, KC_L, KC_U, KC_SLSH,                                   KC_V, KC_D, KC_R, KC_QUOT, KC_Q, \
-  KC_A, KC_T, KC_H, KC_E, KC_COMM,                                   KC_C, KC_S, KC_N, KC_O,    KC_I, \
-  KC_Z, KC_P, KC_F, KC_J, KC_SCLN,                                   KC_B, KC_G, KC_W, KC_X,    KC_Y, \
+  KC_Q, KC_W, KC_E, KC_R, KC_T,                                      KC_Y, KC_U, KC_I,     KC_O,   KC_P, \
+  KC_A, KC_S, KC_D, KC_F, KC_G,                                      KC_H, KC_J, KC_K,     KC_L,   KC_SCLN, \
+  KC_Z, KC_X, KC_C, KC_V, KC_B,                                      KC_N, KC_M, KC_COMMA, KC_DOT, KC_SLSH, \
   RESET,     ESC_CTRL,  KC_BSPC, TAB_NUM,                     ENT_NAV, SPC_SHFT, LDR_ALT \
 ),
 
@@ -215,7 +203,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_NUM] = LAYOUT( \
   RESET,   KC_GRV, KC_PLUS, KC_EQL,  ____,                           ____,    KC_MINS, KC_UNDS, KC_TILD,  ____,    \
   KC_1,    KC_2,   KC_3,    KC_4,    KC_5,                           KC_6,    KC_7,    KC_8,    KC_9,     KC_0,    \
-  KC_HASH, KC_AT,  KC_EXLM, KC_DLR,  KC_PERC,                        KC_CIRC, KC_AMPR, KC_ASTR, KC_PIPE,  KC_QUES, \
+  KC_HASH, KC_AT,  KC_EXLM, KC_DLR,  KC_PERC,                        KC_CIRC, KC_AMPR, KC_ASTR, KC_PIPE,  KC_BSLASH, \
                                ____,  ____, ____,              KC_ENT, KC_SPC, LDR_ALT \
 ),
 /* Lower
